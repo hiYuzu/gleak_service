@@ -11,7 +11,7 @@ const jwtAuth = require("./jwtAuth");
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:8000"],
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
