@@ -17,7 +17,7 @@ module.exports = {
     dao
       .execute($sql.insertPic, picPath)
       .then(() => {
-        res.send({ code: 200, msg: "图片上传成功", urls: picPath });
+        res.send({ code: 200, msg: "upload success"});
       })
       .catch((err) => {
         console.error(err, "图片路径储存数据库失败");
