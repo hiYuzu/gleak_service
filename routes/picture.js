@@ -4,12 +4,12 @@ const multer = require("multer");
 const path = require("path");
 const service = require("../service");
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "public/uploads/" });
 
 router.post("/insert", upload.single("images"), (req, res) => {
   const file = req.file;
   const imageName = file.originalname;
-  const picPath = path.resolve("uploads") + "/" + imageName;
+  const picPath = path.resolve("public/uploads") + "\\" + imageName;
   fs.rename(file.path, picPath, (err) => {
     if (err) {
       console.error(err, "upload fail");
