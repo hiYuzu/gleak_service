@@ -5,13 +5,14 @@ const logger = require("morgan");
 const ejs = require("ejs");
 const cors = require("cors");
 const history = require("connect-history-api-fallback");
-const api = require("./routes/api");
 const index = require("./routes");
+const picture = require("./routes/picture");
+const api = require("./routes/api");
 const jwtAuth = require("./jwtAuth");
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:8080"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(jwtAuth);
 app.use("/", index);
 app.use("/api", api);
+app.use("/picture", picture);
 app.use(express.static(path.resolve("public")));
 app.use(history());
 app.use(function (req, res, next) {
@@ -36,7 +38,7 @@ app.use(function (err, req, res, next) {
       message: err.message,
       code: 401,
     });
-  }else{
+  } else {
     console.error(err.stack);
     res.status(err.status || 500).json({
       message: err.message,

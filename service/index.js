@@ -13,4 +13,16 @@ module.exports = {
         res.end();
       });
   },
+  insertPic: function (picPath, res) {
+    dao
+      .execute($sql.insertPic, picPath)
+      .then(() => {
+        res.send({ code: 200, msg: "图片上传成功", urls: picPath });
+      })
+      .catch((err) => {
+        console.error(err, "图片路径储存数据库失败");
+        res.status(500);
+        res.end();
+      });
+  },
 };
