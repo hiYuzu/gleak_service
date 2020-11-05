@@ -1,28 +1,228 @@
 const express = require("express");
 const service = require("../service");
+const userService = require("../service/user");
+const monitorService = require("../service/monitor");
 const jwtUtil = require("../jwtAuth/jwtUtil");
 const router = express.Router();
 
 router.get("/login", (req, res) => {
+  let result = { status: true };
   const { name, password } = req.query;
-  console.log("get请求参数：%s , %s ", name, password);
-  const token = jwtUtil.sign({name});
-  res.send(token);
-});
-router.post("/userInfo", function (req, res) {
-  let param = req.body;
-  console.log("post请求参数： " + JSON.stringify(param));
-  service.queryAll(req, res);
-});
-router.get("/userInfo", function (req, res) {
-  let param = req.query;
-  console.log("get请求参数： " + JSON.stringify(param));
-  service.queryAll(req, res);
+  userService
+    .selectUserByName(name)
+    .then((user) => {
+      if (user) {
+        if (user.password === password) {
+          result.data = jwtUtil.sign({name});
+        } else {
+          result.status = false;
+          result.msg = "密码错误";
+        }
+      } else {
+        result.status = false;
+        result.msg = "不存在该用户";
+      }
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectUserByName");
+      res.status(500);
+      res.end();
+    });
 });
 router.get("/out", (req, res) => {
   let param = req.query;
   console.log("out请求参数： " + JSON.stringify(param));
   console.log("退出系统");
   res.end();
+});
+router.post("/userInfo", (req, res) => {
+  let param = req.body;
+  console.log("post请求参数： " + JSON.stringify(param));
+  service.queryAll(req, res);
+});
+router.get("/userInfo", (req, res) => {
+  let param = req.query;
+  console.log("get请求参数： " + JSON.stringify(param));
+  service.queryAll(req, res);
+});
+/*user*/
+router.post("/user/insert", (req, res) => {
+  const { name, password, is_add, dept, telphone } = req.body;
+  const user = Array.of(name, password, is_add, dept, telphone);
+  let result = { status: true };
+  userService
+    .insertUser(user)
+    .then(() => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "用户添加失败");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/user/update", (req, res) => {
+  const { id, name, password, is_add, dept, telphone } = req.body;
+  const user = Array.of(name, password, is_add, dept, telphone, id);
+  let result = { status: true };
+  userService
+    .updateUser(user)
+    .then(() => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "用户更新失败");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/user/delete", (req, res) => {
+  const { id } = req.body;
+  let result = { status: true };
+  userService
+    .deleteUser(id)
+    .then(() => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "用户删除失败");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/user/selectUserById", (req, res) => {
+  const { id } = req.body;
+  let result = { status: true };
+  userService
+    .selectUserById(id)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectUserById失败");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/user/selectUserByName", (req, res) => {
+  const { name } = req.body;
+  let result = { status: true };
+  userService
+    .selectUserByName(name)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectUserByName");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/user/selectAllUser", (req, res) => {
+  let result = { status: true };
+  userService
+    .selectAllUser()
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectAllUser失败");
+      res.status(500);
+      res.end();
+    });
+});
+
+/*monitor*/
+router.post("/monitor/insert", (req, res) => {
+  const { name, code, longitude, latitude, period } = req.body;
+  const monitor = Array.of(name, code, longitude, latitude, period);
+  let result = { status: true };
+  monitorService
+    .insertMonitor(monitor)
+    .then(() => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "监测点添加失败");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/monitor/update", (req, res) => {
+  const { id, name, code, longitude, latitude, period } = req.body;
+  const monitor = Array.of(name, code, longitude, latitude, period, id);
+  let result = { status: true };
+  monitorService
+    .updateMonitor(monitor)
+    .then(() => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "监测点更新失败");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/monitor/delete", (req, res) => {
+  const { id } = req.body;
+  let result = { status: true };
+  monitorService
+    .deleteMonitor(id)
+    .then(() => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "监测点删除失败");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/monitor/selectMonitorById", (req, res) => {
+  const { id } = req.body;
+  let result = { status: true };
+  monitorService
+    .selectMonitorById(id)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectMonitorById失败");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/monitor/selectMonitorByName", (req, res) => {
+  const { name } = req.body;
+  let result = { status: true };
+  monitorService
+    .selectMonitorByName(name)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectMonitorByName");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/monitor/selectAllMonitor", (req, res) => {
+  let result = { status: true };
+  monitorService
+    .selectAllMonitor()
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectAllMonitor失败");
+      res.status(500);
+      res.end();
+    });
 });
 module.exports = router;
