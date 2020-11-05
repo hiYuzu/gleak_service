@@ -1,22 +1,22 @@
 const dao = require("../dao");
 const $sql = require("../dao/sql");
 const insertMonitor = (monitor) => {
-  dao.execute($sql.insertMonitor, monitor);
+  return dao.execute($sql.insertMonitor, monitor);
 };
 const updateMonitor = (monitor) => {
-  dao.execute($sql.updateMonitor, monitor);
+  return dao.execute($sql.updateMonitor, monitor);
 };
 const deleteMonitor = (id) => {
-  dao.execute($sql.deleteMonitor, id);
+  return dao.execute($sql.deleteMonitor, id);
 };
 const selectMonitorById = (id) => {
-  dao.execute($sql.selectMonitorById, id);
+  return dao.execute($sql.selectMonitorById, id);
 };
 const selectMonitorByName = (name) => {
-  dao.execute($sql.selectMonitorByName, name);
+  return dao.execute($sql.selectMonitorByName, name);
 };
 const selectAllMonitor = () => {
-  dao.execute($sql.selectAllMonitor);
+  return dao.execute($sql.selectAllMonitor);
 };
 module.exports = {
   insertMonitor,
