@@ -260,6 +260,8 @@ router.post("/monitor/selectMonitorInfo", (req, res) => {
             value,
             state,
             isMonitor,
+            time,
+            period,
           });
         }
       }
