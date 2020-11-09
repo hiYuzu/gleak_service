@@ -11,7 +11,7 @@ router.get("/login", (req, res) => {
   userService
     .selectUserByName(name)
     .then((user) => {
-      if (user) {
+      if (user.length>0) {
         if (user[0].password === password) {
           result.data = jwtUtil.sign({name});
         } else {
