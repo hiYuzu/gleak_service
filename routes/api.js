@@ -12,7 +12,7 @@ router.get("/login", (req, res) => {
     .selectUserByName(name)
     .then((user) => {
       if (user) {
-        if (user.password === password) {
+        if (user[0].password === password) {
           result.data = jwtUtil.sign({name});
         } else {
           result.status = false;
