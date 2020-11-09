@@ -1,5 +1,6 @@
 const dao = require("../dao");
 const $sql = require("../dao/sql");
+
 const insertMonitor = (monitor) => {
   return dao.execute($sql.insertMonitor, monitor);
 };
@@ -18,6 +19,9 @@ const selectMonitorByName = (name) => {
 const selectAllMonitor = () => {
   return dao.execute($sql.selectAllMonitor);
 };
+const selectMonitorInfo = () => {
+  return dao.execute($sql.selectMonitorInfo);
+};
 module.exports = {
   insertMonitor,
   updateMonitor,
@@ -25,4 +29,5 @@ module.exports = {
   selectMonitorById,
   selectMonitorByName,
   selectAllMonitor,
+  selectMonitorInfo,
 };

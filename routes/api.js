@@ -3,7 +3,9 @@ const service = require("../service");
 const userService = require("../service/user");
 const monitorService = require("../service/monitor");
 const jwtUtil = require("../jwtAuth/jwtUtil");
+const moment = require("moment");
 const router = express.Router();
+moment.locale("zh-cn");
 
 router.get("/login", (req, res) => {
   let result = { status: true };
@@ -11,9 +13,9 @@ router.get("/login", (req, res) => {
   userService
     .selectUserByName(name)
     .then((user) => {
-      if (user.length>0) {
+      if (user.length > 0) {
         if (user[0].password === password) {
-          result.data = jwtUtil.sign({name});
+          result.data = jwtUtil.sign({ name });
         } else {
           result.status = false;
           result.msg = "密码错误";
@@ -221,6 +223,51 @@ router.post("/monitor/selectAllMonitor", (req, res) => {
     })
     .catch((err) => {
       console.error(err, "selectAllMonitor失败");
+      res.status(500);
+      res.end();
+    });
+});
+router.post("/monitor/selectMonitorInfo", (req, res) => {
+  let result = { status: true };
+  let dataArray = Array.of();
+  monitorService
+    .selectMonitorInfo()
+    .then((value) => {
+      if (value.length > 0) {
+        for (const data of value) {
+          let {
+            id,
+            name,
+            longitude,
+            latitude,
+            period,
+            time,
+            value,
+            state,
+            isMonitor = 1,
+          } = data;
+          const start_date = moment(time, "YYYY-MM-DD HH:mm:SS");
+          const end_date = moment();
+          const day = end_date.diff(start_date, "days");
+          if (day > period) {
+            isMonitor = 0;
+          }
+          dataArray.push({
+            id,
+            name,
+            longitude,
+            latitude,
+            value,
+            state,
+            isMonitor,
+          });
+        }
+      }
+      result.data = dataArray;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectMonitorInfo");
       res.status(500);
       res.end();
     });
