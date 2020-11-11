@@ -13,7 +13,7 @@ module.exports = {
     "select id,name,password,is_add,dept,telphone,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from user",
   /**********************monitor***********************/
   insertMonitor:
-    "insert into monitor(name,code,longitude,latitude,period,time) VALUES(?,?,?,?,?,?)",
+    "insert into monitor(name,code,longitude,latitude,period) VALUES(?,?,?,?,?)",
   updateMonitor:
     "update monitor set name=?, code=?,longitude=?,latitude=?period=? where id=?",
   deleteMonitor: "delete from user monitor id=?",
