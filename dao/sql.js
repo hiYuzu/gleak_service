@@ -3,7 +3,7 @@ module.exports = {
   insertUser:
     "insert into user(name,password,is_add,dept,telphone) VALUES(?,?,?,?,?)",
   updateUser:
-    "update user set name=?, password=?,is_add=?,telphone=? where id=?",
+    "update user set name=?, password=?,is_add=?,dept=?,telphone=? where id=?",
   deleteUser: "delete from user where id=?",
   selectUserById:
     "select id,name,password,is_add,dept,telphone,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from user where id=?",
