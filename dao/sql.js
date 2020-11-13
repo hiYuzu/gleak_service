@@ -20,7 +20,7 @@ module.exports = {
     "insert into monitor(name,code,longitude,latitude,period) VALUES(?,?,?,?,?)",
   updateMonitor:
     "update monitor set name=?, code=?,longitude=?,latitude=?period=? where id=?",
-  deleteMonitor: "delete from user monitor id=?",
+  deleteMonitor: "delete from  monitor where id=?",
   selectMonitorById:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor where id=?",
   selectMonitorByNameByLimit:
