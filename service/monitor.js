@@ -13,21 +13,34 @@ const deleteMonitor = (id) => {
 const selectMonitorById = (id) => {
   return dao.execute($sql.selectMonitorById, id);
 };
-const selectMonitorByName = (name) => {
-  return dao.execute($sql.selectMonitorByName, name);
-};
-const selectAllMonitor = () => {
-  return dao.execute($sql.selectAllMonitor);
-};
 const selectMonitorInfo = () => {
   return dao.execute($sql.selectMonitorInfo);
+};
+
+const selectLimitMonitorByName = async (name, curPage, pageSize) => {
+  let m = (curPage - 1) * pageSize;
+  let n = parseInt(pageSize);
+  let count;
+  let table;
+  if (name) {
+    let counts = await dao.execute($sql.selectMonitorCountByName,Array.of(name,m,n));
+    count = counts[0].count;
+    table = await dao.execute(
+        $sql.selectMonitorByNameByLimit,
+        Array.of(name, m, n)
+    );
+  } else {
+    let counts = await dao.execute($sql.selectMonitorCount);
+    count = counts[0].count;
+    table = await dao.execute($sql.selectAllMonitorByLimit, Array.of(m, n));
+  }
+  return { count, table };
 };
 module.exports = {
   insertMonitor,
   updateMonitor,
   deleteMonitor,
   selectMonitorById,
-  selectMonitorByName,
-  selectAllMonitor,
   selectMonitorInfo,
+  selectLimitMonitorByName,
 };

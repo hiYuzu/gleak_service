@@ -112,27 +112,28 @@ router.post("/user/selectUserByName", (req, res) => {
   const { name } = req.body;
   let result = { status: true };
   userService
-    .selectUserByName(name)
+      .selectUserByName(name)
+      .then((value) => {
+        result.data = value;
+        res.send(result);
+      })
+      .catch((err) => {
+        console.error(err, "selectUserByName");
+        res.status(500);
+        res.end();
+      });
+});
+router.post("/user/selectLimitUserByName", (req, res) => {
+  const { name,curPage,pageSize } = req.body;
+  let result = { status: true };
+  userService
+    .selectLimitUserByName( name,curPage,pageSize )
     .then((value) => {
       result.data = value;
       res.send(result);
     })
     .catch((err) => {
       console.error(err, "selectUserByName");
-      res.status(500);
-      res.end();
-    });
-});
-router.post("/user/selectAllUser", (req, res) => {
-  let result = { status: true };
-  userService
-    .selectAllUser()
-    .then((value) => {
-      result.data = value;
-      res.send(result);
-    })
-    .catch((err) => {
-      console.error(err, "selectAllUser失败");
       res.status(500);
       res.end();
     });
@@ -198,35 +199,22 @@ router.post("/monitor/selectMonitorById", (req, res) => {
       res.end();
     });
 });
-router.post("/monitor/selectMonitorByName", (req, res) => {
-  const { name } = req.body;
+router.post("/monitor/selectLimitMonitorByName", (req, res) => {
+  const { name,curPage,pageSize } = req.body;
   let result = { status: true };
   monitorService
-    .selectMonitorByName(name)
+    .selectLimitMonitorByName(name,curPage,pageSize)
     .then((value) => {
       result.data = value;
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectMonitorByName");
+      console.error(err, "selectLimitMonitorByName");
       res.status(500);
       res.end();
     });
 });
-router.post("/monitor/selectAllMonitor", (req, res) => {
-  let result = { status: true };
-  monitorService
-    .selectAllMonitor()
-    .then((value) => {
-      result.data = value;
-      res.send(result);
-    })
-    .catch((err) => {
-      console.error(err, "selectAllMonitor失败");
-      res.status(500);
-      res.end();
-    });
-});
+
 router.post("/monitor/selectMonitorInfo", (req, res) => {
   let result = { status: true };
   let dataArray = Array.of();
