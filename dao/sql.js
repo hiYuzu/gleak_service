@@ -19,7 +19,7 @@ module.exports = {
   insertMonitor:
     "insert into monitor(name,code,longitude,latitude,period) VALUES(?,?,?,?,?)",
   updateMonitor:
-    "update monitor set name=?, code=?,longitude=?,latitude=?period=? where id=?",
+    "update monitor set name=?, code=?,longitude=?,latitude=?,period=? where id=?",
   deleteMonitor: "delete from  monitor where id=?",
   selectMonitorById:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor where id=?",
@@ -28,7 +28,8 @@ module.exports = {
   selectAllMonitorByLimit:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor limit ?,?",
   selectMonitorCount: "select count(*) as count from monitor",
-  selectMonitorCountByName: "select count(*) as count from monitor where name like ?",
+  selectMonitorCountByName:
+    "select count(*) as count from monitor where name like ?",
   selectMonitorInfo:
     "select m.id,m.name,m.longitude,m.latitude,m.period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,md.value,md.state,md.user_id from monitor as m join monitor_data as md on m.id=md.monitor_id",
   /**********************image***********************/
