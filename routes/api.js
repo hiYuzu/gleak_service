@@ -1,5 +1,4 @@
 const express = require("express");
-const service = require("../service");
 const userService = require("../service/user");
 const monitorService = require("../service/monitor");
 const monitorDataService = require("../service/monitorData");
@@ -8,6 +7,7 @@ const moment = require("moment");
 const router = express.Router();
 moment.locale("zh-cn");
 
+/*user*/
 router.get("/login", (req, res) => {
   let result = { status: true };
   const { name, password } = req.query;
@@ -41,18 +41,7 @@ router.get("/out", (req, res) => {
   console.log("退出系统");
   res.end();
 });
-router.post("/userInfo", (req, res) => {
-  let param = req.body;
-  console.log("post请求参数： " + JSON.stringify(param));
-  service.queryAll(req, res);
-});
-router.get("/userInfo", (req, res) => {
-  let param = req.query;
-  console.log("get请求参数： " + JSON.stringify(param));
-  service.queryAll(req, res);
-});
 
-/*user*/
 router.post("/user/insert", (req, res) => {
   const { name, password, is_add, dept, telphone } = req.body;
   const user = Array.of(name, password, is_add, dept, telphone);
