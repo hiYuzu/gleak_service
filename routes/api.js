@@ -1,5 +1,4 @@
 const express = require("express");
-const service = require("../service");
 const userService = require("../service/user");
 const monitorService = require("../service/monitor");
 const monitorDataService = require("../service/monitorData");
@@ -40,16 +39,6 @@ router.get("/out", (req, res) => {
   console.log("out请求参数： " + JSON.stringify(param));
   console.log("退出系统");
   res.end();
-});
-router.post("/userInfo", (req, res) => {
-  let param = req.body;
-  console.log("post请求参数： " + JSON.stringify(param));
-  service.queryAll(req, res);
-});
-router.get("/userInfo", (req, res) => {
-  let param = req.query;
-  console.log("get请求参数： " + JSON.stringify(param));
-  service.queryAll(req, res);
 });
 
 /*user*/
