@@ -2,6 +2,7 @@ const express = require("express");
 const service = require("../service");
 const userService = require("../service/user");
 const monitorService = require("../service/monitor");
+const monitorDataService = require("../service/monitorData");
 const jwtUtil = require("../jwtAuth/jwtUtil");
 const moment = require("moment");
 const router = express.Router();
@@ -15,7 +16,9 @@ router.get("/login", (req, res) => {
     .then((user) => {
       if (user.length > 0) {
         if (user[0].password === password) {
-          result.data = jwtUtil.sign({ name });
+          let token = jwtUtil.sign({ name });
+          let userId = user[0].id;
+          result.data = { token, userId };
         } else {
           result.status = false;
           result.msg = "密码错误";
@@ -48,6 +51,7 @@ router.get("/userInfo", (req, res) => {
   console.log("get请求参数： " + JSON.stringify(param));
   service.queryAll(req, res);
 });
+
 /*user*/
 router.post("/user/insert", (req, res) => {
   const { name, password, is_add, dept, telphone } = req.body;
@@ -112,22 +116,22 @@ router.post("/user/selectUserByName", (req, res) => {
   const { name } = req.body;
   let result = { status: true };
   userService
-      .selectUserByName(name)
-      .then((value) => {
-        result.data = value;
-        res.send(result);
-      })
-      .catch((err) => {
-        console.error(err, "selectUserByName");
-        res.status(500);
-        res.end();
-      });
+    .selectUserByName(name)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectUserByName");
+      res.status(500);
+      res.end();
+    });
 });
 router.post("/user/selectLimitUserByName", (req, res) => {
-  const { name,curPage,pageSize } = req.body;
+  const { name, curPage, pageSize } = req.body;
   let result = { status: true };
   userService
-    .selectLimitUserByName( name,curPage,pageSize )
+    .selectLimitUserByName(name, curPage, pageSize)
     .then((value) => {
       result.data = value;
       res.send(result);
@@ -200,16 +204,31 @@ router.post("/monitor/selectMonitorById", (req, res) => {
     });
 });
 router.post("/monitor/selectLimitMonitorByName", (req, res) => {
-  const { name,curPage,pageSize } = req.body;
+  const { name, curPage, pageSize } = req.body;
   let result = { status: true };
   monitorService
-    .selectLimitMonitorByName(name,curPage,pageSize)
+    .selectLimitMonitorByName(name, curPage, pageSize)
     .then((value) => {
       result.data = value;
       res.send(result);
     })
     .catch((err) => {
       console.error(err, "selectLimitMonitorByName");
+      res.status(500);
+      res.end();
+    });
+});
+
+router.get("/monitor/selectAllMonitor", (req, res) => {
+  let result = { status: true };
+  monitorService
+    .selectAllMonitor()
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectAllMonitor");
       res.status(500);
       res.end();
     });
@@ -258,6 +277,23 @@ router.post("/monitor/selectMonitorInfo", (req, res) => {
     })
     .catch((err) => {
       console.error(err, "selectMonitorInfo");
+      res.status(500);
+      res.end();
+    });
+});
+
+/*monitor_data*/
+router.post("/monitorData/selectMonitorDataByName", (req, res) => {
+  const { name, curPage, pageSize } = req.body;
+  let result = { status: true };
+  monitorDataService
+    .selectMonitorDataByName(name, curPage, pageSize)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "监测数据查询失败");
       res.status(500);
       res.end();
     });

@@ -1,18 +1,9 @@
 const dao = require("../dao");
 const $sql = require("../dao/sql");
-const queryAll = (req, res) => {
-  dao
-    .execute($sql.selectAllUser)
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500);
-      res.end();
-    });
+const selectImageUrlByDataId = (id) => {
+  return dao.execute($sql.selectImageUrlByDataId, id);
 };
-const insertPic = (picPath, res) => {
+const insert = (picPath, res) => {
   dao
     .execute($sql.insertPic, picPath)
     .then(() => {
@@ -25,6 +16,6 @@ const insertPic = (picPath, res) => {
     });
 };
 module.exports = {
-  queryAll,
-  insertPic,
+    selectImageUrlByDataId,
+  insert,
 };

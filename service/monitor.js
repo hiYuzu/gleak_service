@@ -17,17 +17,24 @@ const selectMonitorInfo = () => {
   return dao.execute($sql.selectMonitorInfo);
 };
 
+const selectAllMonitor = () => {
+  return dao.execute($sql.selectAllMonitor);
+};
+
 const selectLimitMonitorByName = async (name, curPage, pageSize) => {
   let m = (curPage - 1) * pageSize;
   let n = parseInt(pageSize);
   let count;
   let table;
   if (name) {
-    let counts = await dao.execute($sql.selectMonitorCountByName,Array.of(name,m,n));
+    let counts = await dao.execute(
+      $sql.selectMonitorCountByName,
+      Array.of(name, m, n)
+    );
     count = counts[0].count;
     table = await dao.execute(
-        $sql.selectMonitorByNameByLimit,
-        Array.of(name, m, n)
+      $sql.selectMonitorByNameByLimit,
+      Array.of(name, m, n)
     );
   } else {
     let counts = await dao.execute($sql.selectMonitorCount);
@@ -43,4 +50,5 @@ module.exports = {
   selectMonitorById,
   selectMonitorInfo,
   selectLimitMonitorByName,
+  selectAllMonitor,
 };
