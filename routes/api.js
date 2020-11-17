@@ -135,7 +135,7 @@ router.post("/user/selectLimitUserByName", (req, res) => {
 /*monitor*/
 router.post("/monitor/insert", (req, res) => {
   const { name, code, longitude, latitude, period } = req.body;
-  const monitor = Array.of(name, code, longitude, latitude, period);
+  const monitor = Array.of(name, code, longitude, latitude, period,null);
   let result = { status: true };
   monitorService
     .insertMonitor(monitor)

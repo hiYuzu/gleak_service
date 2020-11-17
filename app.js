@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(jwtAuth);
 app.use("/", index);
 app.use("/api", api);
-app.use("/picture", picture);
+app.use("/image", picture);
 app.use(express.static(path.resolve("public")));
 app.use(history());
 app.use(function (req, res, next) {

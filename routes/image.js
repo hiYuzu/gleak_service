@@ -6,7 +6,7 @@ const imageService = require("../service/image");
 const router = express.Router();
 const upload = multer({ dest: "public/uploads/" });
 
-router.post("/image/insert", upload.single("images"), (req, res) => {
+router.post("/insert", upload.single("images"), (req, res) => {
   const file = req.file;
   const imageName = file.originalname;
   const picPath = path.resolve("public/uploads") + "\\" + imageName;
@@ -20,7 +20,7 @@ router.post("/image/insert", upload.single("images"), (req, res) => {
     }
   });
 });
-router.get("/image/selectImageUrlByDataId", (req, res) => {
+router.get("/selectImageUrlByDataId", (req, res) => {
   const { id } = req.query;
   let result = { status: true };
   imageService
