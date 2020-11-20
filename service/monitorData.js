@@ -34,7 +34,7 @@ const getStatisticsDataByStateAndBetweenTime = async (start, end) => {
     array.push({ name, trueStateCount, falseStateCount });
   }
   array.sort((a, b) => {
-    if (a.falseState < b.falseState) {
+    if (a.falseStateCount < b.falseStateCount) {
       return 1;
     }
     return -1;
