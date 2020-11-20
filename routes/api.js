@@ -135,7 +135,7 @@ router.post("/user/selectLimitUserByName", (req, res) => {
 /*monitor*/
 router.post("/monitor/insert", (req, res) => {
   const { name, code, longitude, latitude, period } = req.body;
-  const monitor = Array.of(name, code, longitude, latitude, period,null);
+  const monitor = Array.of(name, code, longitude, latitude, period, null);
   let result = { status: true };
   monitorService
     .insertMonitor(monitor)
@@ -287,4 +287,22 @@ router.post("/monitorData/selectMonitorDataByName", (req, res) => {
       res.end();
     });
 });
+router.get(
+  "/monitorData/getStatisticsDataByStateAndBetweenTime",
+  (req, res) => {
+    const { start, end } = req.query;
+    let result = { status: true };
+    monitorDataService
+      .getStatisticsDataByStateAndBetweenTime(start, end)
+      .then((value) => {
+        result.data = value;
+        res.send(result);
+      })
+      .catch((err) => {
+        console.error(err, "getStatisticsDataByStateAndBetweenTime false");
+        res.status(500);
+        res.end();
+      });
+  }
+);
 module.exports = router;

@@ -13,6 +13,35 @@ const selectMonitorDataByName = async (name, curPage, pageSize) => {
   table = await dao.execute($sql.selectMonitorDataByName, Array.of(name, m, n));
   return { count, table };
 };
+const getStatisticsDataByStateAndBetweenTime = async (start, end) => {
+  const var1 = await dao.execute(
+    $sql.getStatisticsDataByBetweenTime,
+    Array.of(start, end)
+  );
+  const var0 = await dao.execute(
+    $sql.getStatisticsDataByStateAndBetweenTime,
+    Array.of(0, start, end)
+  );
+  let array = new Array();
+  for (let object of var1) {
+    let name = object.name;
+    let count = object.count;
+    let falseObject = var0.find((value) => value.name == name);
+    let falseState = 0;
+    if (falseObject) {
+      falseState = falseObject.count;
+    }
+    array.push({ name, count, falseState });
+  }
+  array.sort((a, b) => {
+    if (a.falseState < b.falseState) {
+      return 1;
+    }
+    return -1;
+  });
+  return array;
+};
 module.exports = {
   selectMonitorDataByName,
+  getStatisticsDataByStateAndBetweenTime,
 };
