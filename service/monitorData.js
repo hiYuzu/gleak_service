@@ -25,13 +25,13 @@ const getStatisticsDataByStateAndBetweenTime = async (start, end) => {
   let array = new Array();
   for (let object of var1) {
     let name = object.name;
-    let count = object.count;
     let falseObject = var0.find((value) => value.name == name);
     let falseState = 0;
     if (falseObject) {
       falseState = falseObject.count;
     }
-    array.push({ name, count, falseState });
+    let trueState = object.count - falseState;
+    array.push({ name, trueState, falseState });
   }
   array.sort((a, b) => {
     if (a.falseState < b.falseState) {
