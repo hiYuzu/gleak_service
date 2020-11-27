@@ -35,10 +35,12 @@ module.exports = {
   selectMonitorInfo:
     "select m.id,m.name,m.longitude,m.latitude,m.period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,md.value,md.state,md.user_id from monitor as m join monitor_data as md on m.id=md.monitor_id",
 
+  /********************************video****************************/
+  insertVideo: "insert into user(name,password) values(?,'null')",
+  selectVideoUrlByDataId: "select url from video where data_id=?",
+
   /********************************image****************************/
   insertPic: "insert into user(name,password) values(?,'null')",
-  selectTime:
-    "select DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS time from user",
   selectImageUrlByDataId: "select url from image where data_id=?",
 
   /************************monitorData*****************************/

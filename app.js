@@ -6,13 +6,14 @@ const ejs = require("ejs");
 const cors = require("cors");
 const history = require("connect-history-api-fallback");
 const index = require("./routes");
-const picture = require("./routes/image");
+const video = require("./routes/video");
+const image = require("./routes/image");
 const api = require("./routes/api");
 const jwtAuth = require("./jwtAuth");
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:8080"],
+    origin: "*",
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -26,7 +27,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(jwtAuth);
 app.use("/", index);
 app.use("/api", api);
-app.use("/image", picture);
+app.use("/video", video);
+app.use("/image", image);
 app.use(express.static(path.resolve("public")));
 app.use(history());
 app.use(function (req, res, next) {
