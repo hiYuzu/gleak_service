@@ -10,7 +10,21 @@ router.post("/insert", upload.single("video"), (req, res) => {
   const file = req.file;
   const videoName = file.originalname;
   const filePath = path.resolve("public/uploads") + "\\" + videoName;
+  console.log(req.body.key);
+  console.log(filePath);
   fs.rename(file.path, filePath, (err) => {
+    if (err) {
+      console.error(err, "upload video fail");
+      res.status(500);
+      res.end();
+    } else {
+      // videoService.insert(filePath, res);
+      console.info("upload video success");
+      res.status(200);
+      res.end();
+    }
+  });
+  /*fs.rename(file.path, filePath, (err) => {
     if (err) {
       console.error(err, "upload fail");
       res.status(500);
@@ -21,9 +35,9 @@ router.post("/insert", upload.single("video"), (req, res) => {
       res.status(200);
       res.end();
     }
-  });
+  });*/
 });
-router.get("/selectImageUrlByDataId", (req, res) => {
+router.get("/selectVideoUrlByDataId", (req, res) => {
   const { id } = req.query;
   let result = { status: true };
   videoService
@@ -38,4 +52,5 @@ router.get("/selectImageUrlByDataId", (req, res) => {
       res.end();
     });
 });
+
 module.exports = router;

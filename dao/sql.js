@@ -50,7 +50,21 @@ module.exports = {
     "select count(mtd.id) as count from monitor_data as mtd inner join monitor as mt inner join user as us on mt.id=mtd.monitor_id and mtd.user_id=us.id where mt.name like ?",
   /************************statistics*****************************/
   getStatisticsDataByBetweenTime:
-    "select count(m.id) as count ,m.name as name from monitor as m join monitor_data as md on m.id=md.monitor_id where md.gmt_modified between ? and ? group by m.id;",
+    "select count(m.id) as count ,m.name as name from monitor as m join monitor_data as md on m.id=md.monitor_id where md.gmt_modified between ? and ? group by m.id",
   getStatisticsDataByStateAndBetweenTime:
-    "select count(m.id) as count ,m.name as name from monitor as m join monitor_data as md on m.id=md.monitor_id where md.state=? and md.gmt_modified between ? and ? group by m.id;",
+    "select count(m.id) as count ,m.name as name from monitor as m join monitor_data as md on m.id=md.monitor_id where md.state=? and md.gmt_modified between ? and ? group by m.id",
+
+  /************************location*****************************/
+  insertLocation:
+    "insert into location(user_id,longitude,latitude) values(?,?,?)",
+  selectLocationByUserIdAndBetweenTime:
+    "select longitude,latitude,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') as time from location  where user_id=? and time between ? and ?",
+
+  /************************real_location*****************************/
+  insertRealLocation:
+    "insert into real_location(user_id,longitude,latitude) values(?,?,?)",
+  updateRealLocation:
+    "update real_location set longitude=?, latitude=? where id=?",
+  selectRealLocationByUserId:
+    "select longitude,latitude from real_location  where user_id=?",
 };
