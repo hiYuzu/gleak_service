@@ -309,18 +309,22 @@ router.get(
 /*location*/
 router.post("/location/insert", (req, res) => {
   const { userId, longitude, latitude } = req.body;
-  const location = Array.of(userId, longitude, latitude);
-  let result = { status: true };
-  locationService
-    .insertLocation(location)
-    .then(() => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.error(err, "用户:%s , 添加位置点失败", userId);
-      res.status(500);
-      res.end();
-    });
+  if (userId && longitude && latitude) {
+    const location = Array.of(userId, longitude, latitude);
+    let result = { status: true };
+    locationService
+      .insertLocation(location)
+      .then(() => {
+        res.send(result);
+      })
+      .catch((err) => {
+        console.error(err, "用户:%s , 添加位置点失败", userId);
+        res.status(500);
+        res.end();
+      });
+  } else {
+    res.end();
+  }
 });
 router.get("/location/selectLocationByUserIdAndBetweenTime", (req, res) => {
   const { userId, start, end } = req.query;
