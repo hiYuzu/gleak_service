@@ -341,11 +341,10 @@ router.get("/location/selectLocationByUserIdAndBetweenTime", (req, res) => {
       res.end();
     });
 });
-router.get("/location/selectRealLocationByUserId", (req, res) => {
-  const { userId } = req.query;
+router.get("/location/selectRealLocationForAllUser", (req, res) => {
   let result = { status: true };
   locationService
-    .selectRealLocationByUserId(userId)
+    .selectRealLocationForAllUser()
     .then((value) => {
       if (value.length == 1) {
         result.data = value[0];

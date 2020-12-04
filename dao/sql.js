@@ -65,8 +65,7 @@ module.exports = {
     "insert into real_location(user_id,longitude,latitude) values(?,?,?)",
   updateRealLocation:
     "update real_location set longitude=?, latitude=? where id=?",
-  selectRealLocationByUserId:
-    "select longitude,latitude from real_location  where user_id=?",
-  selectRealLocationIdByUserId:
-    "select id from real_location  where user_id=?",
+  selectRealLocationForAllUser:
+    "select rl.longitude as longitude ,rl.latitude as latitude,us.id as id, us.name as name,DATE_FORMAT(rl.time, '%Y-%m-%d %H:%i:%S') as time from real_location  as rl join user as us on rl.user_id=us.id",
+  selectRealLocationIdByUserId: "select id from real_location  where user_id=?",
 };

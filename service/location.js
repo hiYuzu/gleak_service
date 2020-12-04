@@ -32,8 +32,8 @@ const updateRealLocation = async (location) => {
 const selectLocationByUserIdAndBetweenTime = (params) => {
   return dao.execute($sql.selectLocationByUserIdAndBetweenTime, params);
 };
-const selectRealLocationByUserId = (id) => {
-  return dao.execute($sql.selectRealLocationByUserId, id);
+const selectRealLocationForAllUser = () => {
+  return dao.execute($sql.selectRealLocationForAllUser);
 };
 
 module.exports = {
@@ -41,5 +41,5 @@ module.exports = {
   selectLocationByUserIdAndBetweenTime,
   insertRealLocation,
   updateRealLocation,
-  selectRealLocationByUserId,
+  selectRealLocationForAllUser,
 };
