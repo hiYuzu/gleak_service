@@ -58,7 +58,7 @@ module.exports = {
   insertLocation:
     "insert into location(user_id,longitude,latitude) values(?,?,?)",
   selectLocationByUserIdAndBetweenTime:
-    "select longitude,latitude,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') as time from location  where user_id=? and time between ? and ?",
+    "select longitude as lng,latitude as lat,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') as time from location  where user_id=? and time between ? and ?",
 
   /************************real_location*****************************/
   insertRealLocation:
