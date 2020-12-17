@@ -341,21 +341,16 @@ router.get("/location/selectLocationByUserIdAndBetweenTime", (req, res) => {
       res.end();
     });
 });
-router.get("/location/selectRealLocationByUserId", (req, res) => {
-  const { userId } = req.query;
+router.get("/location/selectRealLocationForAllUser", (req, res) => {
   let result = { status: true };
   locationService
-    .selectRealLocationByUserId(userId)
+    .selectRealLocationForAllUser()
     .then((value) => {
-      if (value.length == 1) {
-        result.data = value[0];
-      } else {
-        result.data = null;
-      }
+      result.data = value;
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectRealLocationByUserId false");
+      console.error(err, "selectRealLocationForAllUser false");
       res.status(500);
       res.end();
     });
