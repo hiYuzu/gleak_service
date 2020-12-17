@@ -1,5 +1,17 @@
 const dao = require("../dao");
 const $sql = require("../dao/sql");
+const videoService = require("../service/video");
+const insert = async (req, filePath, videoName) => {
+  let data = JSON.parse(req.body.data);
+  const { leakId, userId, monitorData } = data;
+  const { monitorTime, monitorValue, monitorStatus } = monitorData;
+  const result = await dao.execute(
+    $sql.insertMonitorData,
+    Array.of(leakId, userId, monitorValue, monitorStatus, monitorTime)
+  );
+  const {insertId}=result;
+  return  videoService.insert(Array.of(videoName, filePath, insertId));
+};
 const selectMonitorDataByName = async (name, curPage, pageSize) => {
   let m = (curPage - 1) * pageSize;
   let n = parseInt(pageSize);
@@ -42,6 +54,7 @@ const getStatisticsDataByStateAndBetweenTime = async (start, end) => {
   return array;
 };
 module.exports = {
+  insert,
   selectMonitorDataByName,
   getStatisticsDataByStateAndBetweenTime,
 };

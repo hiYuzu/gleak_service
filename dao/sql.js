@@ -36,7 +36,7 @@ module.exports = {
     "select m.id,m.name,m.longitude,m.latitude,m.period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,md.value,md.state,md.user_id from monitor as m left join monitor_data as md on m.id=md.monitor_id",
 
   /********************************video****************************/
-  insertVideo: "insert into user(name,password) values(?,'null')",
+  insertVideo: "insert into video(name,url,data_id) values(?,?,?)",
   selectVideoUrlByDataId: "select url from video where data_id=?",
 
   /********************************image****************************/
@@ -44,6 +44,7 @@ module.exports = {
   selectImageUrlByDataId: "select url from image where data_id=?",
 
   /************************monitorData*****************************/
+  insertMonitorData: "insert into monitor_data(monitor_id,value,state,user_id,gmt_modified) values(?,?,?,?,?)",
   selectMonitorDataByName:
     "select mtd.id,mtd.state,mtd.value,mt.name as monitorName ,us.name as userName,DATE_FORMAT(mtd.gmt_modified, '%Y-%m-%d %H:%i:%S') AS time from monitor_data as mtd inner join monitor as mt inner join user as us on mt.id=mtd.monitor_id and mtd.user_id=us.id where mt.name like ? limit ?,?",
   selectMonitorDataCountByName:
