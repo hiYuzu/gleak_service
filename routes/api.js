@@ -140,7 +140,8 @@ router.post("/monitor/insert", (req, res) => {
   let result = { status: true };
   monitorService
     .insertMonitor(monitor)
-    .then(() => {
+    .then(({ insertId }) => {
+      result.data = insertId;
       res.send(result);
     })
     .catch((err) => {
