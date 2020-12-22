@@ -43,6 +43,9 @@ const selectLimitMonitorByName = async (name, curPage, pageSize) => {
   }
   return { count, table };
 };
+const selectMonitorByName = (name) => {
+  return dao.execute($sql.selectMonitorByName, Array.of(name));
+};
 module.exports = {
   insertMonitor,
   updateMonitor,
@@ -50,5 +53,6 @@ module.exports = {
   selectMonitorById,
   selectMonitorInfo,
   selectLimitMonitorByName,
+  selectMonitorByName,
   selectAllMonitor,
 };

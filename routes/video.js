@@ -26,7 +26,7 @@ router.post("/insert", upload.single("video"), (req, res) => {
           res.end();
         } else {
           monitorDataService
-            .insert(req, filePath, videoName)
+            .insert(req, date + "\\" + videoName, videoName)
             .then(() => {
               res.status(200);
               res.end();
