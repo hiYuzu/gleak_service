@@ -7,10 +7,10 @@ const insert = async (req, filePath, videoName) => {
   const { monitorTime, monitorValue, monitorStatus } = monitorData;
   const result = await dao.execute(
     $sql.insertMonitorData,
-    Array.of(leakId, userId, monitorValue, monitorStatus, monitorTime)
+    Array.of(leakId, monitorValue, monitorStatus, userId, monitorTime)
   );
-  const {insertId}=result;
-  return  videoService.insert(Array.of(videoName, filePath, insertId));
+  const { insertId } = result;
+  return videoService.insert(Array.of(videoName, filePath, insertId));
 };
 const selectMonitorDataByName = async (name, curPage, pageSize) => {
   let m = (curPage - 1) * pageSize;
