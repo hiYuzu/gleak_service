@@ -210,6 +210,22 @@ router.post("/monitor/selectLimitMonitorByName", (req, res) => {
     });
 });
 
+router.post("/monitor/selectMonitorByName", (req, res) => {
+  const { name } = req.body;
+  let result = { status: true };
+  monitorService
+    .selectMonitorByName(name)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectMonitorByName");
+      res.status(500);
+      res.end();
+    });
+});
+
 router.get("/monitor/selectAllMonitor", (req, res) => {
   let result = { status: true };
   monitorService
