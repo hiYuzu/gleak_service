@@ -9,6 +9,7 @@ const insert = async (req, filePath, videoName) => {
     $sql.insertMonitorData,
     Array.of(leakId, monitorValue, monitorStatus, userId, monitorTime)
   );
+  await dao.execute($sql.updateMonitorTime, Array.of(monitorTime, leakId));
   const { insertId } = result;
   return videoService.insert(Array.of(videoName, filePath, insertId));
 };

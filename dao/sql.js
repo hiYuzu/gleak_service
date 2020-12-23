@@ -20,13 +20,14 @@ module.exports = {
     "insert into monitor(name,code,longitude,latitude,period) VALUES(?,?,?,?,?)",
   updateMonitor:
     "update monitor set name=?, code=?,longitude=?,latitude=?,period=? where id=?",
+  updateMonitorTime: "update monitor set time=? where id=?",
   deleteMonitor: "delete from  monitor where id=?",
   selectMonitorById:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor where id=?",
   selectAllMonitor:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor",
   selectMonitorByName:
-    "select name longitude,latitude from monitor where name like ?",
+    "select name ,longitude,latitude from monitor where name like ?",
   selectMonitorByNameByLimit:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor where name like ? limit ?,?",
   selectAllMonitorByLimit:
@@ -34,8 +35,8 @@ module.exports = {
   selectMonitorCount: "select count(id) as count from monitor",
   selectMonitorCountByName:
     "select count(id) as count from monitor where name like ?",
-  selectMonitorInfo:
-    "select m.id,m.name,m.longitude,m.latitude,m.period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,md.value,md.state,md.user_id from monitor as m left join monitor_data as md on m.id=md.monitor_id",
+  selectMonitorInfoByName:
+    "select m.id,m.name,m.longitude,m.latitude,m.period,DATE_FORMAT(m.gmt_create, '%Y-%m-%d %H:%i:%S') AS create_time,DATE_FORMAT(m.time, '%Y-%m-%d %H:%i:%S') AS time,md.value,md.state,md.user_id from monitor as m left join monitor_data as md on m.id=md.monitor_id and m.time=md.gmt_modified where m.name like ?",
 
   /********************************video****************************/
   insertVideo: "insert into video(name,url,data_id) values(?,?,?)",

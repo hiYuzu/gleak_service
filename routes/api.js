@@ -241,11 +241,12 @@ router.get("/monitor/selectAllMonitor", (req, res) => {
     });
 });
 
-router.post("/monitor/selectMonitorInfo", (req, res) => {
+router.post("/monitor/selectMonitorInfoByName", (req, res) => {
+  const { name } = req.body;
   let result = { status: true };
   let dataArray = Array.of();
   monitorService
-    .selectMonitorInfo()
+    .selectMonitorInfoByName(name)
     .then((value) => {
       if (value.length > 0) {
         for (const data of value) {
@@ -258,14 +259,25 @@ router.post("/monitor/selectMonitorInfo", (req, res) => {
             time,
             value,
             state,
+            create_time,
             isMonitor = 1,
           } = data;
-          const start_date = moment(time, "YYYY-MM-DD HH:mm:SS");
-          const end_date = moment();
-          const day = end_date.diff(start_date, "days");
-          if (day > period) {
-            isMonitor = 0;
+          if (time) {
+            const start_date = moment(time, "YYYY-MM-DD HH:mm:SS");
+            const end_date = moment();
+            const day = end_date.diff(start_date, "days");
+            if (day > period) {
+              isMonitor = 0;
+            }
+          } else {
+            const start_date = moment(create_time, "YYYY-MM-DD HH:mm:SS");
+            const end_date = moment();
+            const day = end_date.diff(start_date, "days");
+            if (day > period) {
+              isMonitor = 0;
+            }
           }
+
           dataArray.push({
             id,
             name,
@@ -283,7 +295,7 @@ router.post("/monitor/selectMonitorInfo", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectMonitorInfo");
+      console.error(err, "selectMonitorInfoByName");
       res.status(500);
       res.end();
     });

@@ -13,8 +13,8 @@ const deleteMonitor = (id) => {
 const selectMonitorById = (id) => {
   return dao.execute($sql.selectMonitorById, id);
 };
-const selectMonitorInfo = () => {
-  return dao.execute($sql.selectMonitorInfo);
+const selectMonitorInfoByName = (name) => {
+  return dao.execute($sql.selectMonitorInfoByName, Array.of(name));
 };
 
 const selectAllMonitor = () => {
@@ -51,7 +51,7 @@ module.exports = {
   updateMonitor,
   deleteMonitor,
   selectMonitorById,
-  selectMonitorInfo,
+  selectMonitorInfoByName,
   selectLimitMonitorByName,
   selectMonitorByName,
   selectAllMonitor,
