@@ -48,8 +48,15 @@ router.post("/user/insert", (req, res) => {
   const user = Array.of(name, password, is_add, dept, telphone);
   let result = { status: true };
   userService
-    .insertUser(user)
-    .then(() => {
+    .insertUser(name, user)
+    .then((value) => {
+      if (value) {
+        let { insertId } = value;
+        result.data = insertId;
+      } else {
+        result.status = false;
+        result.msg = "用户名称不可重复！请修改名称后重新提交";
+      }
       res.send(result);
     })
     .catch((err) => {
@@ -142,7 +149,7 @@ router.post("/monitor/insert", (req, res) => {
     .insertMonitor(name, monitor)
     .then((value) => {
       if (value) {
-        let  { insertId }=value;
+        let { insertId } = value;
         result.data = insertId;
       } else {
         result.status = false;

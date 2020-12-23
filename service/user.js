@@ -1,7 +1,12 @@
 const dao = require("../dao");
 const $sql = require("../dao/sql");
-const insertUser = (user) => {
-  return dao.execute($sql.insertUser, user);
+const insertUser = async (name, user) => {
+  let value = await dao.execute($sql.selectUserByName, name);
+  if (value.length == 0) {
+    return dao.execute($sql.insertUser, user);
+  } else {
+    return false;
+  }
 };
 const updateUser = (user) => {
   return dao.execute($sql.updateUser, user);
