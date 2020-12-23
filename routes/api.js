@@ -139,9 +139,14 @@ router.post("/monitor/insert", (req, res) => {
   const monitor = Array.of(name, code, longitude, latitude, period, null);
   let result = { status: true };
   monitorService
-    .insertMonitor(monitor)
+    .insertMonitor(name, monitor)
     .then(({ insertId }) => {
-      result.data = insertId;
+      if (insertId) {
+        result.status = false;
+        result.msg = "设备名称不可重复！请修改名称后重新提交";
+      } else {
+        result.data = insertId;
+      }
       res.send(result);
     })
     .catch((err) => {

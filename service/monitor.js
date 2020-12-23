@@ -1,8 +1,13 @@
 const dao = require("../dao");
 const $sql = require("../dao/sql");
 
-const insertMonitor = (monitor) => {
-  return dao.execute($sql.insertMonitor, monitor);
+const insertMonitor = async (name, monitor) => {
+  let value = await dao.execute($sql.selectMonitorByName, Array.of(name));
+  if (value.length == 0) {
+    return dao.execute($sql.insertMonitor, monitor);
+  } else {
+    return false;
+  }
 };
 const updateMonitor = (monitor) => {
   return dao.execute($sql.updateMonitor, monitor);

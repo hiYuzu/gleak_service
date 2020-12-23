@@ -27,7 +27,7 @@ module.exports = {
   selectAllMonitor:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor",
   selectMonitorByName:
-    "select name ,longitude,latitude from monitor where name like ?",
+    "select id from monitor where name = ?",
   selectMonitorByNameByLimit:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor where name like ? limit ?,?",
   selectAllMonitorByLimit:
