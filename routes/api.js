@@ -397,4 +397,19 @@ router.get("/location/selectRealLocationForAllUser", (req, res) => {
       res.end();
     });
 });
+router.get("/location/selectRealLocationByUserName", (req, res) => {
+  const { name } = req.query;
+  let result = { status: true };
+  locationService
+    .selectRealLocationByUserName(name)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectRealLocationByUserName false");
+      res.status(500);
+      res.end();
+    });
+});
 module.exports = router;

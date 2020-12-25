@@ -26,8 +26,7 @@ module.exports = {
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor where id=?",
   selectAllMonitor:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor",
-  selectMonitorByName:
-    "select id from monitor where name = ?",
+  selectMonitorByName: "select id from monitor where name = ?",
   selectMonitorByNameByLimit:
     "select id,name,code,longitude,latitude,period,DATE_FORMAT(time, '%Y-%m-%d %H:%i:%S') AS time,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%S') AS createTime,DATE_FORMAT(gmt_modified, '%Y-%m-%d %H:%i:%S') AS updateTime from monitor where name like ? limit ?,?",
   selectAllMonitorByLimit:
@@ -72,5 +71,7 @@ module.exports = {
     "update real_location set longitude=?, latitude=? where id=?",
   selectRealLocationForAllUser:
     "select rl.longitude as longitude ,rl.latitude as latitude,us.id as id, us.name as name,DATE_FORMAT(rl.time, '%Y-%m-%d %H:%i:%S') as time from real_location  as rl join user as us on rl.user_id=us.id",
+  selectRealLocationByUserName:
+    "select rl.longitude as longitude ,rl.latitude as latitude,us.id as id, us.name as name,DATE_FORMAT(rl.time, '%Y-%m-%d %H:%i:%S') as time from real_location  as rl join user as us on rl.user_id=us.id where us.name like ?",
   selectRealLocationIdByUserId: "select id from real_location  where user_id=?",
 };
