@@ -19,7 +19,8 @@ router.get("/login", (req, res) => {
         if (user[0].password === password) {
           let token = jwtUtil.sign({ name });
           let userId = user[0].id;
-          result.data = { token, userId };
+          let status=user[0].status
+          result.data = { token, userId ,status};
         } else {
           result.status = false;
           result.msg = "密码错误";
@@ -48,8 +49,15 @@ router.post("/user/insert", (req, res) => {
   const user = Array.of(name, password, is_add, dept, telphone);
   let result = { status: true };
   userService
-    .insertUser(user)
-    .then(() => {
+    .insertUser(name, user)
+    .then((value) => {
+      if (value) {
+        let { insertId } = value;
+        result.data = insertId;
+      } else {
+        result.status = false;
+        result.msg = "用户名称不可重复！请修改名称后重新提交";
+      }
       res.send(result);
     })
     .catch((err) => {
@@ -139,9 +147,15 @@ router.post("/monitor/insert", (req, res) => {
   const monitor = Array.of(name, code, longitude, latitude, period, null);
   let result = { status: true };
   monitorService
-    .insertMonitor(monitor)
-    .then(({ insertId }) => {
-      result.data = insertId;
+    .insertMonitor(name, monitor)
+    .then((value) => {
+      if (value) {
+        let { insertId } = value;
+        result.data = insertId;
+      } else {
+        result.status = false;
+        result.msg = "设备名称不可重复！请修改名称后重新提交";
+      }
       res.send(result);
     })
     .catch((err) => {
@@ -241,11 +255,12 @@ router.get("/monitor/selectAllMonitor", (req, res) => {
     });
 });
 
-router.post("/monitor/selectMonitorInfo", (req, res) => {
+router.post("/monitor/selectMonitorInfoByName", (req, res) => {
+  const { name } = req.body;
   let result = { status: true };
   let dataArray = Array.of();
   monitorService
-    .selectMonitorInfo()
+    .selectMonitorInfoByName(name)
     .then((value) => {
       if (value.length > 0) {
         for (const data of value) {
@@ -258,14 +273,25 @@ router.post("/monitor/selectMonitorInfo", (req, res) => {
             time,
             value,
             state,
+            create_time,
             isMonitor = 1,
           } = data;
-          const start_date = moment(time, "YYYY-MM-DD HH:mm:SS");
-          const end_date = moment();
-          const day = end_date.diff(start_date, "days");
-          if (day > period) {
-            isMonitor = 0;
+          if (time) {
+            const start_date = moment(time, "YYYY-MM-DD HH:mm:SS");
+            const end_date = moment();
+            const day = end_date.diff(start_date, "days");
+            if (day > period) {
+              isMonitor = 0;
+            }
+          } else {
+            const start_date = moment(create_time, "YYYY-MM-DD HH:mm:SS");
+            const end_date = moment();
+            const day = end_date.diff(start_date, "days");
+            if (day > period) {
+              isMonitor = 0;
+            }
           }
+
           dataArray.push({
             id,
             name,
@@ -283,7 +309,7 @@ router.post("/monitor/selectMonitorInfo", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectMonitorInfo");
+      console.error(err, "selectMonitorInfoByName");
       res.status(500);
       res.end();
     });
@@ -368,6 +394,21 @@ router.get("/location/selectRealLocationForAllUser", (req, res) => {
     })
     .catch((err) => {
       console.error(err, "selectRealLocationForAllUser false");
+      res.status(500);
+      res.end();
+    });
+});
+router.get("/location/selectRealLocationByUserName", (req, res) => {
+  const { name } = req.query;
+  let result = { status: true };
+  locationService
+    .selectRealLocationByUserName(name)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectRealLocationByUserName false");
       res.status(500);
       res.end();
     });

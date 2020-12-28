@@ -1,8 +1,13 @@
 const dao = require("../dao");
 const $sql = require("../dao/sql");
 
-const insertMonitor = (monitor) => {
-  return dao.execute($sql.insertMonitor, monitor);
+const insertMonitor = async (name, monitor) => {
+  let value = await dao.execute($sql.selectMonitorByName, Array.of(name));
+  if (value.length == 0) {
+    return dao.execute($sql.insertMonitor, monitor);
+  } else {
+    return false;
+  }
 };
 const updateMonitor = (monitor) => {
   return dao.execute($sql.updateMonitor, monitor);
@@ -13,8 +18,8 @@ const deleteMonitor = (id) => {
 const selectMonitorById = (id) => {
   return dao.execute($sql.selectMonitorById, id);
 };
-const selectMonitorInfo = () => {
-  return dao.execute($sql.selectMonitorInfo);
+const selectMonitorInfoByName = (name) => {
+  return dao.execute($sql.selectMonitorInfoByName, Array.of(name));
 };
 
 const selectAllMonitor = () => {
@@ -51,7 +56,7 @@ module.exports = {
   updateMonitor,
   deleteMonitor,
   selectMonitorById,
-  selectMonitorInfo,
+  selectMonitorInfoByName,
   selectLimitMonitorByName,
   selectMonitorByName,
   selectAllMonitor,
