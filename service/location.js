@@ -15,7 +15,7 @@ const updateRealLocation = async (location) => {
   let id = realConst.get(userId);
   if (!id) {
     const ids = await dao.execute($sql.selectRealLocationIdByUserId, userId);
-    if (ids) {
+    if (ids.length != 0) {
       id = ids[0].id;
       realConst.set(location[0], id);
       const param = Array.of(location[1], location[2], id);

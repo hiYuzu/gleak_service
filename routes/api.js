@@ -19,8 +19,8 @@ router.get("/login", (req, res) => {
         if (user[0].password === password) {
           let token = jwtUtil.sign({ name });
           let userId = user[0].id;
-          let status=user[0].status
-          result.data = { token, userId ,status};
+          let status = user[0].status;
+          result.data = { token, userId, status };
         } else {
           result.status = false;
           result.msg = "密码错误";
