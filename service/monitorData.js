@@ -26,6 +26,14 @@ const selectMonitorDataByName = async (name, curPage, pageSize) => {
   table = await dao.execute($sql.selectMonitorDataByName, Array.of(name, m, n));
   return { count, table };
 };
+const selectMonitorDataAndVideoUrlByName = async (name) => {
+  if (!name) {
+    name = "%";
+  }
+  let table;
+  table = await dao.execute($sql.selectMonitorDataAndVideoUrlByName, name);
+  return { table };
+};
 const getStatisticsDataByStateAndBetweenTime = async (start, end) => {
   const var1 = await dao.execute(
     $sql.getStatisticsDataByBetweenTime,
@@ -57,5 +65,6 @@ const getStatisticsDataByStateAndBetweenTime = async (start, end) => {
 module.exports = {
   insert,
   selectMonitorDataByName,
+  selectMonitorDataAndVideoUrlByName,
   getStatisticsDataByStateAndBetweenTime,
 };

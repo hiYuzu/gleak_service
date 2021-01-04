@@ -203,7 +203,7 @@ router.post("/monitor/selectMonitorById", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectMonitorById失败");
+      console.error(err, "selectMonitorById false");
       res.status(500);
       res.end();
     });
@@ -218,7 +218,7 @@ router.post("/monitor/selectLimitMonitorByName", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectLimitMonitorByName");
+      console.error(err, "selectLimitMonitorByName false");
       res.status(500);
       res.end();
     });
@@ -249,7 +249,7 @@ router.get("/monitor/selectAllMonitor", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectAllMonitor");
+      console.error(err, "selectAllMonitor false");
       res.status(500);
       res.end();
     });
@@ -309,7 +309,7 @@ router.post("/monitor/selectMonitorInfoByName", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectMonitorInfoByName");
+      console.error(err, "selectMonitorInfoByName false");
       res.status(500);
       res.end();
     });
@@ -326,13 +326,29 @@ router.post("/monitorData/selectMonitorDataByName", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "监测数据查询失败");
+      console.error(err, "selectMonitorDataByName false");
+      res.status(500);
+      res.end();
+    });
+});
+/*monitor_data*/
+router.post("/monitorData/selectMonitorDataAndVideoUrlByName", (req, res) => {
+  const { name } = req.body;
+  let result = { status: true };
+  monitorDataService
+    .selectMonitorDataAndVideoUrlByName(name)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectMonitorDataAndVideoUrlByName false");
       res.status(500);
       res.end();
     });
 });
 router.get(
-  "/monitorData/getStatisticsDataByStateAndBetweenTime",
+  "/monitorData/getStatisticsDataByStateAndBetweenTime false",
   (req, res) => {
     const { start, end } = req.query;
     let result = { status: true };
