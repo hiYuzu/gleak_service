@@ -13,6 +13,18 @@ const insert = async (req, filePath, videoName) => {
   const { insertId } = result;
   return videoService.insert(Array.of(videoName, filePath, insertId));
 };
+const insertWithNullVideoData = async (body) => {
+  const { leakId, userId, monitorTime, monitorValue, monitorStatus } = body;
+  const monitorData = Array.of(
+    leakId,
+    monitorValue,
+    monitorStatus,
+    userId,
+    monitorTime
+  );
+  await dao.execute($sql.insertMonitorData, monitorData);
+  return dao.execute($sql.updateMonitorTime, Array.of(monitorTime, leakId));
+};
 const selectMonitorDataByName = async (name, curPage, pageSize) => {
   let m = (curPage - 1) * pageSize;
   let n = parseInt(pageSize);
@@ -64,6 +76,7 @@ const getStatisticsDataByStateAndBetweenTime = async (start, end) => {
 };
 module.exports = {
   insert,
+  insertWithNullVideoData,
   selectMonitorDataByName,
   selectMonitorDataAndVideoUrlByName,
   getStatisticsDataByStateAndBetweenTime,

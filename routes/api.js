@@ -316,6 +316,21 @@ router.post("/monitor/selectMonitorInfoByName", (req, res) => {
 });
 
 /*monitor_data*/
+router.post("/monitorData/insertWithNullVideoData", (req, res) => {
+  let result = { status: true };
+  const body = req.body;
+  monitorDataService
+    .insertWithNullVideoData(body)
+    .then(() => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "insertWithNullVideoData false");
+      res.status(500);
+      res.end();
+    });
+});
+
 router.post("/monitorData/selectMonitorDataByName", (req, res) => {
   const { name, curPage, pageSize } = req.body;
   let result = { status: true };
@@ -331,7 +346,7 @@ router.post("/monitorData/selectMonitorDataByName", (req, res) => {
       res.end();
     });
 });
-/*monitor_data*/
+
 router.post("/monitorData/selectMonitorDataAndVideoUrlByName", (req, res) => {
   const { name } = req.body;
   let result = { status: true };
@@ -347,6 +362,7 @@ router.post("/monitorData/selectMonitorDataAndVideoUrlByName", (req, res) => {
       res.end();
     });
 });
+
 router.get(
   "/monitorData/getStatisticsDataByStateAndBetweenTime false",
   (req, res) => {
@@ -365,6 +381,7 @@ router.get(
       });
   }
 );
+
 /*location*/
 router.post("/location/insert", (req, res) => {
   const { userId, longitude, latitude } = req.body;
