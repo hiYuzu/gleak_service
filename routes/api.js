@@ -364,7 +364,7 @@ router.post("/monitorData/selectMonitorDataAndVideoUrlByName", (req, res) => {
 });
 
 router.get(
-  "/monitorData/getStatisticsDataByStateAndBetweenTime false",
+  "/monitorData/getStatisticsDataByStateAndBetweenTime",
   (req, res) => {
     const { start, end } = req.query;
     let result = { status: true };
