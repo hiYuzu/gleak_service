@@ -51,7 +51,7 @@ module.exports = {
   selectMonitorDataByName:
     "select mtd.id,mtd.state,mtd.value,mt.name as monitorName ,us.name as userName,DATE_FORMAT(mtd.gmt_modified, '%Y-%m-%d %H:%i:%S') AS time from monitor_data as mtd inner join monitor as mt inner join user as us on mt.id=mtd.monitor_id and mtd.user_id=us.id where mt.name like ? order by mtd.gmt_modified desc limit ?,?",
   selectMonitorDataAndVideoUrlByName:
-    "select mtd.id,mtd.state,mtd.value,mt.name as monitorName ,us.name as userName,video.url,DATE_FORMAT(mtd.gmt_modified, '%Y-%m-%d %H:%i:%S') AS time from monitor_data as mtd inner join monitor as mt inner join user as us on mt.id=mtd.monitor_id and mtd.user_id=us.id inner join video as video on video.data_id=mtd.id where mt.name like ? order by mtd.gmt_modified desc",
+    "select mtd.id,mtd.state,mtd.value,mt.name as monitorName ,us.name as userName,video.url,DATE_FORMAT(mtd.gmt_modified, '%Y-%m-%d %H:%i:%S') AS time from monitor_data as mtd inner join monitor as mt inner join user as us on mt.id=mtd.monitor_id and mtd.user_id=us.id left join video as video on video.data_id=mtd.id where mt.name like ? order by mtd.gmt_modified desc",
   selectMonitorDataCountByName:
     "select count(mtd.id) as count from monitor_data as mtd inner join monitor as mt inner join user as us on mt.id=mtd.monitor_id and mtd.user_id=us.id where mt.name like ?",
   /************************statistics*****************************/

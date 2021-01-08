@@ -5,6 +5,13 @@ const jwtAuth = expressJwt({
   algorithms: ["HS256"],
   requestProperty: "data",
 }).unless({
-  path: ["/api/login", "/api/out", new RegExp("^/static"),new RegExp("^/uploads"),new RegExp("^/$")],
+  path: [
+    "/api/login",
+    "/api/out",
+    "/api/app/selectAppByAppName",
+    new RegExp("^/static"),
+    new RegExp("^/uploads"),
+    new RegExp("^/$"),
+  ],
 });
 module.exports = jwtAuth;
