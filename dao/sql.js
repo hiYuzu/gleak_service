@@ -76,4 +76,8 @@ module.exports = {
   selectRealLocationByUserName:
     "select rl.longitude as longitude ,rl.latitude as latitude,us.id as id, us.name as name,DATE_FORMAT(rl.time, '%Y-%m-%d %H:%i:%S') as time from real_location  as rl join user as us on rl.user_id=us.id where us.name like ?",
   selectRealLocationIdByUserId: "select id from real_location  where user_id=?",
+
+  /************************app*****************************/
+  selectAppByAppName:
+    "select version ,url from app where code=? order by number desc limit 1",
 };

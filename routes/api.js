@@ -3,6 +3,7 @@ const userService = require("../service/user");
 const monitorService = require("../service/monitor");
 const monitorDataService = require("../service/monitorData");
 const locationService = require("../service/location");
+const appService = require("../service/app");
 const jwtUtil = require("../jwtAuth/jwtUtil");
 const moment = require("moment");
 const router = express.Router();
@@ -442,6 +443,27 @@ router.get("/location/selectRealLocationByUserName", (req, res) => {
     })
     .catch((err) => {
       console.error(err, "selectRealLocationByUserName false");
+      res.status(500);
+      res.end();
+    });
+});
+
+/*app*/
+router.get("/app/selectAppByAppName", (req, res) => {
+  const { code } = req.query;
+  let result = { status: true };
+  appService
+    .selectAppByAppName(code)
+    .then((value) => {
+      if (value.length > 0) {
+        result.data = value[0];
+      } else {
+        result.data = null;
+      }
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectAppByAppName false");
       res.status(500);
       res.end();
     });
