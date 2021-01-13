@@ -13,6 +13,18 @@ const insert = async (req, filePath, videoName) => {
   const { insertId } = result;
   return videoService.insert(Array.of(videoName, filePath, insertId));
 };
+const insertWithNullVideoData = async (body) => {
+  const { leakId, userId, monitorTime, monitorValue, monitorStatus } = body;
+  const monitorData = Array.of(
+    leakId,
+    monitorValue,
+    monitorStatus,
+    userId,
+    monitorTime
+  );
+  await dao.execute($sql.insertMonitorData, monitorData);
+  return dao.execute($sql.updateMonitorTime, Array.of(monitorTime, leakId));
+};
 const selectMonitorDataByName = async (name, curPage, pageSize) => {
   let m = (curPage - 1) * pageSize;
   let n = parseInt(pageSize);
@@ -25,6 +37,14 @@ const selectMonitorDataByName = async (name, curPage, pageSize) => {
   count = counts[0].count;
   table = await dao.execute($sql.selectMonitorDataByName, Array.of(name, m, n));
   return { count, table };
+};
+const selectMonitorDataAndVideoUrlByName = async (name) => {
+  if (!name) {
+    name = "%";
+  }
+  let table;
+  table = await dao.execute($sql.selectMonitorDataAndVideoUrlByName, name);
+  return { table };
 };
 const getStatisticsDataByStateAndBetweenTime = async (start, end) => {
   const var1 = await dao.execute(
@@ -56,6 +76,8 @@ const getStatisticsDataByStateAndBetweenTime = async (start, end) => {
 };
 module.exports = {
   insert,
+  insertWithNullVideoData,
   selectMonitorDataByName,
+  selectMonitorDataAndVideoUrlByName,
   getStatisticsDataByStateAndBetweenTime,
 };

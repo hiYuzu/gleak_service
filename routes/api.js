@@ -3,6 +3,7 @@ const userService = require("../service/user");
 const monitorService = require("../service/monitor");
 const monitorDataService = require("../service/monitorData");
 const locationService = require("../service/location");
+const appService = require("../service/app");
 const jwtUtil = require("../jwtAuth/jwtUtil");
 const moment = require("moment");
 const router = express.Router();
@@ -19,8 +20,8 @@ router.get("/login", (req, res) => {
         if (user[0].password === password) {
           let token = jwtUtil.sign({ name });
           let userId = user[0].id;
-          let status=user[0].status
-          result.data = { token, userId ,status};
+          let status = user[0].status;
+          result.data = { token, userId, status };
         } else {
           result.status = false;
           result.msg = "密码错误";
@@ -203,7 +204,7 @@ router.post("/monitor/selectMonitorById", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectMonitorById失败");
+      console.error(err, "selectMonitorById false");
       res.status(500);
       res.end();
     });
@@ -218,7 +219,7 @@ router.post("/monitor/selectLimitMonitorByName", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectLimitMonitorByName");
+      console.error(err, "selectLimitMonitorByName false");
       res.status(500);
       res.end();
     });
@@ -249,7 +250,7 @@ router.get("/monitor/selectAllMonitor", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectAllMonitor");
+      console.error(err, "selectAllMonitor false");
       res.status(500);
       res.end();
     });
@@ -309,13 +310,28 @@ router.post("/monitor/selectMonitorInfoByName", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "selectMonitorInfoByName");
+      console.error(err, "selectMonitorInfoByName false");
       res.status(500);
       res.end();
     });
 });
 
 /*monitor_data*/
+router.post("/monitorData/insertWithNullVideoData", (req, res) => {
+  let result = { status: true };
+  const body = req.body;
+  monitorDataService
+    .insertWithNullVideoData(body)
+    .then(() => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "insertWithNullVideoData false");
+      res.status(500);
+      res.end();
+    });
+});
+
 router.post("/monitorData/selectMonitorDataByName", (req, res) => {
   const { name, curPage, pageSize } = req.body;
   let result = { status: true };
@@ -326,11 +342,28 @@ router.post("/monitorData/selectMonitorDataByName", (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.error(err, "监测数据查询失败");
+      console.error(err, "selectMonitorDataByName false");
       res.status(500);
       res.end();
     });
 });
+
+router.post("/monitorData/selectMonitorDataAndVideoUrlByName", (req, res) => {
+  const { name } = req.body;
+  let result = { status: true };
+  monitorDataService
+    .selectMonitorDataAndVideoUrlByName(name)
+    .then((value) => {
+      result.data = value;
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectMonitorDataAndVideoUrlByName false");
+      res.status(500);
+      res.end();
+    });
+});
+
 router.get(
   "/monitorData/getStatisticsDataByStateAndBetweenTime",
   (req, res) => {
@@ -349,6 +382,7 @@ router.get(
       });
   }
 );
+
 /*location*/
 router.post("/location/insert", (req, res) => {
   const { userId, longitude, latitude } = req.body;
@@ -409,6 +443,27 @@ router.get("/location/selectRealLocationByUserName", (req, res) => {
     })
     .catch((err) => {
       console.error(err, "selectRealLocationByUserName false");
+      res.status(500);
+      res.end();
+    });
+});
+
+/*app*/
+router.get("/app/selectAppByAppName", (req, res) => {
+  const { code } = req.query;
+  let result = { status: true };
+  appService
+    .selectAppByAppName(code)
+    .then((value) => {
+      if (value.length > 0) {
+        result.data = value[0];
+      } else {
+        result.data = null;
+      }
+      res.send(result);
+    })
+    .catch((err) => {
+      console.error(err, "selectAppByAppName false");
       res.status(500);
       res.end();
     });
